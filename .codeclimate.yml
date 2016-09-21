@@ -4,4 +4,10 @@ languages:
 exclude_paths:
 - "app/assets/javascripts/dependencies/*"
 - "vendor/assets/*"
-
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
