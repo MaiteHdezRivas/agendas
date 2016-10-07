@@ -7,7 +7,7 @@ FactoryGirl.define do
     #scheduled { rand(0..1)==1 ? Faker::Time.forward(60, :day) : Faker::Time.backward(100, :morning) }
     title "Event title"
     description "Event description"
-    scheduled "2015-09-23 15:48:11"
+    scheduled Time.now
     association :position, factory: :position
     association :user, factory: :user
   end

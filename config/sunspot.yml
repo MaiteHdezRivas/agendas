@@ -29,7 +29,7 @@ development:
 test:
   solr:
     hostname: localhost
-    port: 8982
+    port: 8981
     log_level: WARNING
     path: /solr/test
 
