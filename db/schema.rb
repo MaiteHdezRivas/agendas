@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330104310) do
+ActiveRecord::Schema.define(version: 20170406113123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id"
@@ -80,6 +81,7 @@ ActiveRecord::Schema.define(version: 20170330104310) do
     t.integer  "position_id"
     t.string   "location"
     t.string   "slug"
+    t.tsvector "tsv"
   end
 
   add_index "events", ["position_id"], name: "index_events_on_position_id", using: :btree

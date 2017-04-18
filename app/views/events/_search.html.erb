@@ -1,0 +1,28 @@
+<%= form_tag events_path, method: :get do %>
+  <div class="row search">
+    <div class=" small-12 columns">
+      <div class="row collapse">
+        <!-- Search field -->
+        <div class="small-12 large-12  columns ">
+          <div class="small-6 columns">
+            <%= label_tag(:search_title, t("backend.search.title")) %>
+            <input type="text" name="search_title" placeholder="<%= t("backend.search.placeholder_title") %>"  value="<%= params[:search_title] %>" onchange="form.search_person.value=''">
+          </div>
+          <div class="small-6 columns">
+            <%= label_tag(:search_person, t("backend.search.person")) %>
+            <input type="text" name="search_person" placeholder="<%= t("backend.search.placeholder_person") %>"  value="<%= params[:search_person] %>"  onchange="form.search_title.value=''">
+          </div>
+          <input type="text" class="search-field" placeholder="your search ">
+        </div>
+      </div>
+      <div class="small-12 columns">
+        <div class="small-3 columns left">
+          <%= link_to t('backend.new_event'), new_event_path, :class => "expanded button tiny radius warning" if can? :create, Event %>
+        </div>
+        <div class="small-3 columns right">
+          <%= submit_tag t("backend.search.button"), class: 'button expanded' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 
 
   scope :active, -> {where(:active => true)}
+  scope :order_last_name, -> {order(last_name: :asc)}
 
   def name
     last_name.to_s + ", " + first_name.to_s

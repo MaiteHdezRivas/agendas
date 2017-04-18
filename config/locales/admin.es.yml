@@ -24,6 +24,7 @@ es:
     unable_to_perform_operation: "No ha sido posible realizar la operación"
     review_errors: "Por favor corrija los siguientes errores antes de continuar"
     sync: "Sincronizar con UWEB"
+    select: "Seleccionar"
     export: "Exportar"
 
     contributors: "Contribuidores"
@@ -66,6 +67,28 @@ es:
     new_position: "Nuevo cargo"
     edit_position: "Editar cargo"
     must_have_position: "Es necesario añadir al menos un cargo"
+
+    advanced_search:
+      manages: 'Gestor'
+      manages_blank: 'Elige un gestor'
+      date: 'Por fecha'
+      date_placeholder: 'DD/MM/AAAA'
+      date_range_blank: 'Elige una fecha'
+      date_1: 'Últimas 24 horas'
+      date_2: 'Última semana'
+      date_3: 'Último mes'
+      date_4: 'Último año'
+      date_5: 'Personalizada'
+      from: 'Desde'
+      general: 'Con el texto'
+      general_placeholder: 'Escribe el texto'
+      search: 'Filtrar'
+      title: 'Búsqueda avanzada'
+      to: 'Hasta'
+      holder: 'Titular'
+      include_participant :
+        name : 'Convocante/Asistente'
+        value : '1'
 
     events: "Eventos"
     event: "Evento"

@@ -1,0 +1,63 @@
+<div class="row advanced-search-form">
+  <div class="relative">
+    <%= link_to t("backend.advanced_search.title"), "#advanced_search_form", id: 'js-advanced-search-title', class: "advanced-search small" %>
+  </div>
+  <%= form_tag admin_path, id: "advanced_search_form", method: :get do %>
+    <div id='js-advanced-search' data-advanced-search-terms=<%= @advanced_search_terms.present? %> style="display: none">
+
+      <div class="small-12 column">
+        <label for="search">
+          <%= t("backend.advanced_search.general") %>
+        </label>
+        <%= text_field_tag "advanced_search[title]", params[:advanced_search].try(:[], :title),
+                           placeholder: t("backend.advanced_search.general_placeholder") %>
+      </div>
+
+      <div class="small-12 column">
+        <label for="search">
+          <%= t("backend.advanced_search.holder") %>
+        </label>
+        <label for="incluir_asistente">
+          <i><%= t("backend.advanced_search.include_participant.name") %></i>
+          <%= check_box_tag('advanced_search[include_participant]', t("backend.advanced_search.include_participant.value"), checked_include_participant) %>
+          <%= select_tag('advanced_search[holder]', holder_search_options, include_blank: t("backend.select")) %>
+        </label>
+      </div>
+
+      <div class="small-12 large-9 column">
+        <label for="backend.advanced_search.manages"><%= t("backend.advanced_search.manages") %></label>
+        <%= select_tag('advanced_search[manage_same_holders]', manage_same_holders_search_options, include_blank: t("backend.select")) %>
+      </div>
+
+      <div class="small-12 large-3 column">
+        <label for="js-advanced-search-date-min"><%= t("backend.advanced_search.date") %></label>
+        <%= select_tag('advanced_search[date_range]', date_range_options,
+                       include_blank: t("backend.advanced_search.date_range_blank"),
+                       id: 'js-advanced-search-date-min') %>
+      </div>
+
+      <div id='js-custom-date' class='small-12 large-9' style="display: none">
+        <div class='small-12 large-6 column'>
+          <label for="advanced_search_date_min">
+            <%= t("backend.advanced_search.from") %> (<%= t("backend.advanced_search.date_placeholder") %>)
+          </label>
+          <%= text_field_tag 'advanced_search[date_min]',
+                             params[:advanced_search].try(:[], :date_min),
+                             class: 'fdatepicker' %>
+        </div>
+        <div class='small-12 large-6 column'>
+          <label for="advanced_search_date_max">
+            <%= t("backend.advanced_search.to") %> (<%= t("backend.advanced_search.date_placeholder") %>)
+          </label>
+          <%= text_field_tag 'advanced_search[date_max]',
+                             params[:advanced_search].try(:[], :date_max),
+                             class: 'fdatepicker' %>
+        </div>
+      </div>
+
+      <div class="small-12 medium-3 column end clear">
+        <%= submit_tag t("backend.advanced_search.search"), class: 'button expanded' %>
+      </div>
+    </div>
+  <% end %>
+</div>

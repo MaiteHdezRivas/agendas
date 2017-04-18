@@ -6,7 +6,7 @@
   :model => Event.model_name.human, :count => @event.errors.count) %></strong>
           <ul>
             <% @event.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
+              <li><%= msg %></li>
             <% end %>
           </ul>
         </div>
@@ -40,7 +40,7 @@
 
       <div id="participants">
         <%= f.fields_for :participants do |participant| %>
-            <%= render 'participant_fields', f: participant %>
+          <%= render 'participant_fields', f: participant %>
         <% end %>
       </div>
       <%= link_to_add_association t('backend.add'), f, :participants, :class => "button radius tiny info right", 'data-association-insertion-method' => 'append', 'data-association-insertion-node' => '#participants' %>
@@ -58,7 +58,7 @@
 
       <div id="attendees">
         <%= f.fields_for :attendees do |attendee| %>
-            <%= render 'attendee_fields', f: attendee %>
+          <%= render 'attendee_fields', f: attendee %>
         <% end %>
       </div>
       <%= link_to_add_association t('backend.add'), f, :attendees, :class => "button radius tiny info right",'data-association-insertion-method' => 'append', 'data-association-insertion-node' => '#attendees' %>

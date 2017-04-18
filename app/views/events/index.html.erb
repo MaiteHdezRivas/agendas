@@ -1,4 +1,4 @@
-<%= render 'search_form' %>
+<%= render 'advanced_search' %>
 <div class="row">
   <%= page_entries_info @events%>
   <%= paginate @events%>
@@ -31,7 +31,7 @@
         <td class="event_txt">
           <p><%= link_to event.title, event_path(event) %></p>
         </td>
-        <td class="event_holder">
+        <td class="event_holder" id="position_<%=event.position.id%>">
           <%= event.position.holder.full_name %><br />
           <small><%= event.position.title %></small>
         </td>

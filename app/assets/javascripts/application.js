@@ -18,6 +18,7 @@
 //= require social-share-button
 //= require respond.min
 //= require rem.min
+
 $(function() {
-  $(document).foundation();
+    $(document).foundation();
 });

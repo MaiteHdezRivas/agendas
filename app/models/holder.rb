@@ -1,6 +1,8 @@
 class Holder < ActiveRecord::Base
+  include PgSearch
 
-  # Relations
+  pg_search_scope :search_by_full_name, :against => [:first_name, :last_name]  # Relations
+
   has_many :manages
   has_many :users, through: :manages
   has_many :areas, through: :positions
@@ -13,6 +15,17 @@ class Holder < ActiveRecord::Base
   validate :must_have_position, :on => :update
 
   scope :by_name, lambda {|name| where(["last_name ILIKE ? or first_name ILIKE ?", "%#{name}%", "%#{name}%"]).includes(positions: [:titular_events, :participants_events])}
+
+  def searchable_values
+    {
+        last_name   => 'A',
+        first_name  => 'B'
+    }
+  end
+
+  def self.search(terms)
+    self.pg_search(terms)
+  end
 
   def must_have_position
     if positions.empty? or positions.all? {|child| child.marked_for_destruction? }

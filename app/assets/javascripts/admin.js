@@ -20,6 +20,17 @@
 //= require dependencies/foundation-datepicker
 //= require_tree ./dependencies/foundation-datepicker-locales
 //= require tinymce
+//= require app
+//= require advanced_search
+
+var initialize_modules = function() {
+    App.AdvancedSearch.initialize();
+};
+
 $(function() {
-  $(document).foundation();
+    $(document).ready(initialize_modules);
+    $(document).on('page:load', initialize_modules);
+    $(document).on('ajax:complete', initialize_modules);
+
+    $(document).foundation();
 });

@@ -1,10 +1,13 @@
 class Event < ActiveRecord::Base
+  extend FriendlyId
+  include Searchable
+  include SearchCache
+  include Filterable
   include PublicActivity::Model
 
   tracked owner: Proc.new { |controller, model| controller && controller.current_user }
-  tracked title: Proc.new { |controller, model| controller.get_title }
+  tracked title: Proc.new { |controller, model| controller && controller.get_title }
 
-  extend FriendlyId
   friendly_id :title, use: [:slugged, :finders]
 
   # Relations
@@ -61,13 +64,31 @@ class Event < ActiveRecord::Base
     return event_ids
   end
 
+  def searchable_values
+    {
+      title        => 'A',
+      description  => 'B'
+    }
+  end
+
+  def self.p_search(terms)
+    self.pg_search(terms)
+  end
+
   def self.searches(params)
     if params[:search_person].present? || params[:search_title].present?
       if params[:search_person].present?
-        @events = Event.search_by_holder_name(params[:search_person]).uniq
+
+       # @events = Event.search_by_holder_name(params[:search_person]).uniq
+        holder_ids = Holder.search_by_full_name(params[:search_person]).ids
+        position_ids = Position.where(holder_id: holder_ids).pluck(:id)
+        titular_event_ids = Event.where(position_id: position_ids).pluck(:id)
+        participant_event_ids = Participant.where(position_id: position_ids).pluck(:event_id)
+
+        @events = Event.where(id: (titular_event_ids + participant_event_ids).uniq).includes(:position, :attachments, position: [:holder])
       end
       if params[:search_title].present?
-        @events = Event.by_title(params[:search_title])
+        @events = Event.p_search(params[:search_title])
       end
     else
       @events = Event.page(params[:page]).per(20)
@@ -76,14 +97,14 @@ class Event < ActiveRecord::Base
     return @events
   end
 
-  def self.search_by_holder_name(name)
-    holder_ids = Holder.by_name(name).pluck(:id)
-    position_ids = Position.where(holder_id: holder_ids).pluck(:id)
-    titular_event_ids = Event.where(position_id: position_ids).pluck(:id)
-    participant_event_ids = Participant.where(position_id: position_ids).pluck(:event_id)
+ # def self.search_by_holder_name(name)
+ #   holder_ids = Holder.by_name(name).pluck(:id)
+ #   position_ids = Position.where(holder_id: holder_ids).pluck(:id)
+ #   titular_event_ids = Event.where(position_id: position_ids).pluck(:id)
+ #   participant_event_ids = Participant.where(position_id: position_ids).pluck(:event_id)
 
-    @events = Event.where(id: (titular_event_ids + participant_event_ids).uniq).includes(:position, :attachments, position: [:holder])
-  end
+ #   @events = Event.where(id: (titular_event_ids + participant_event_ids).uniq).includes(:position, :attachments, position: [:holder])
+ # end
 
   def self.has_manage_holders(user_id)
     holder_ids = Holder.by_manages(user_id).pluck(:id)
