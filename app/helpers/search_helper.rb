@@ -4,13 +4,13 @@ module SearchHelper
     params[:advanced_search].try(:[], :include_participant).present?
   end
 
-  def holder_search_options
+  def position_search_options
     options_for_select(@positions.map{|position| [position.holder.full_name_comma+' - '+position.title, position.id]},
-                       params[:advanced_search].try(:[], :holder))
+                       params[:advanced_search].try(:[], :position))
   end
 
   def manage_same_holders_search_options
-    options_for_select(@manage_same_holders.map{|manage| [manage.user.full_name_comma, manage.id]},
+    options_for_select(@manage_same_holders.map{|manage| [manage.user.full_name_comma, manage.user_id]},
                        params[:advanced_search].try(:[], :manage_same_holders))
   end
 
@@ -25,7 +25,7 @@ module SearchHelper
   end
 
   def selected_date_range
-    custom_date_range? ? 'custom' : params[:advanced_search].try(:[], :date_range)
+    custom_date_range? ? 'custom' : params[:advanced_search].try(:[], :date_select)
   end
 
   def custom_date_range?

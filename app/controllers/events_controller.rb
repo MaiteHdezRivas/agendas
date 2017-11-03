@@ -9,19 +9,25 @@ class EventsController < AdminController
   end
 
   def list_admin_events
-    @events = Event.searches(params)
-    @events.order(scheduled: :desc).page(params[:page]).per(50)
+    @events = Event.all
+    search_events
   end
 
   def list_user_events
-    @events = Event.by_manages(current_user.id)
+    #@events = select_include_participant? ? Event.by_manages_with_participants(current_user.id) : Event.by_manages(current_user.id)
+    search_events
+  end
 
+  def select_include_participant?
+    params[:advanced_search][:include_participant] == "1"
+  end
+
+  def search_events
     @events = @events.p_search(params[:advanced_search][:title]) if params[:advanced_search].present? && params[:advanced_search][:title].present?
-
     @events = @advanced_search_terms.present? ? @events.filter(@advanced_search_terms) : @events
-
     @events.order(scheduled: :desc).page(params[:page]).per(50)
   end
+
 
   def create
     @event = Event.new(event_params)
@@ -85,11 +91,11 @@ class EventsController < AdminController
   end
 
   def search_by_date?
-    params[:advanced_search] && params[:advanced_search][:date_min].present?
+    params[:advanced_search] && params[:advanced_search][:date_select].present?
   end
 
   def search_start_date
-    case params[:advanced_search][:date_min]
+    case params[:advanced_search][:date_select]
       when '1'
         24.hours.ago
       when '2'

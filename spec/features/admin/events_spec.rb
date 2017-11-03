@@ -47,7 +47,7 @@ feature 'Events' do
     scenario 'visit search by title' do
       @event = FactoryGirl.create(:event, title: 'New event from Capybara')
       visit events_path
-      fill_in :search_title, with: 'Capybara'
+      fill_in :advanced_search_title, with: 'Capybara'
       click_button I18n.t('backend.search.button')
       expect(page).to have_content @event.title
     end
@@ -64,7 +64,7 @@ feature 'Events' do
     scenario 'visit non results search page' do
       @event = FactoryGirl.create(:event, title: 'New not found event')
       visit events_path
-      fill_in :search_title, with: 'Capybara'
+      fill_in :advanced_search_title, with: 'Capybara'
       click_button I18n.t('backend.search.button')
       expect(page).not_to have_content @event.title
     end

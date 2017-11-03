@@ -17,7 +17,7 @@
     <div class="small-6 columns"><strong><%= t('backend.event_update_date') %></strong></div>
   </div>
   <div class="row">
-    <div class="small-6 columns"><%= @event.user.full_name %></div>
+    <div id="user_id_<%=@event.user_id%>" class="small-6 columns"><%= @event.user.full_name %></div>
     <div class="small-6 columns"><%= @event.updated_at.strftime(t('time.formats.short')) %></div>
   </div>
 </fieldset>

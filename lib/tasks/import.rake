@@ -44,11 +44,12 @@ namespace :madrid do
             unidad = units['UNIDAD_ORGANIZATIVA']
             if unidad.kind_of?(Array)
               unidad_pos = unidad.index{|u|u['COD_ORGANICO'] == data['COD_UNIDAD']}
+              directory_api.create_tree(unidad[unidad_pos])
               unit = unidad[unidad_pos]['ID_UNIDAD']
             else
+              directory_api.create_tree(unidad)
               unit = unidad['ID_UNIDAD']
             end
-            directory_api.create_tree(unit)
           end
         end
 

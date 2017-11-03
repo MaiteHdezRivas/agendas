@@ -116,6 +116,14 @@ class Event < ActiveRecord::Base
     holder_ids = Holder.by_manages(user_id).pluck(:id)
     position_ids = Position.where(holder_id: holder_ids).pluck(:id)
     titular_event_ids = Event.where(position_id: position_ids).pluck(:id)
+
+    Event.where(id: (titular_event_ids ).uniq).includes(:position, :attachments, position: [:holder])
+  end
+
+  def self.by_manages_with_participants(user_id)
+    holder_ids = Holder.by_manages(user_id).pluck(:id)
+    position_ids = Position.where(holder_id: holder_ids).pluck(:id)
+    titular_event_ids = Event.where(position_id: position_ids).pluck(:id)
     participant_event_ids = Participant.where(position_id: position_ids).pluck(:event_id)
 
     Event.where(id: (titular_event_ids + participant_event_ids).uniq).includes(:position, :attachments, position: [:holder])

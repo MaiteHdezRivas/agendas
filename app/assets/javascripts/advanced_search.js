@@ -10,6 +10,8 @@ App.AdvancedSearch = {
         if ($('#js-advanced-search-date-min').val() === 'custom') {
             $('#js-custom-date').show();
         } else {
+            $('#advanced_search_date_min').removeAttr('value');
+            $('#advanced_search_date_max').removeAttr('value');
             $('#js-custom-date').hide();
         }
     },
