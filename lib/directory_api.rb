@@ -27,16 +27,17 @@ class DirectoryApi < MadridApi
     area = Area.find_or_create_by(internal_id: unit['ID_UNIDAD'])
     area.title = unit['DENOMINACION']
 
-    # If parent area does not exist in database, we create it
-    if parent = get_unit(unit['ID_UNIDAD_PADRE'])
-      # In parent area does not exist in database, we create it
-      unless parent_area = Area.find_by(internal_id: parent['ID_UNIDAD'])
-        parent_area = Area.create(internal_id: parent['ID_UNIDAD'], title: parent['DENOMINACION'])
-      end
+    parent = get_unit(unit['ID_UNIDAD_PADRE'])
+    parent_area = Area.find_or_create_by(internal_id: parent['ID_UNIDAD']) unless parent.nil?
+
+    unless parent_area.nil?
+      parent_area.title(parent['DENOMINACION'])
+      parent_area.save
+
       area.parent = parent_area
-      area.save
-      create_tree(parent['ID_UNIDAD'])
     end
+    area.save
+    create_tree(parent['ID_UNIDAD']) unless parent.nil?
   end
 
 end
